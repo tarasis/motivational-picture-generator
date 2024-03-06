@@ -1,49 +1,61 @@
-import puppeteer from "puppeteer";
-import { scrollPageToBottom } from "puppeteer-autoscroll-down";
 import express from "express";
 import "dotenv/config";
 
-const folderToServe = "/Users/tarasis/Programming/websites/rmcg.dev/www/";
+import { Worker, isMainThread, parentPort, workerData } from "worker_threads";
+
+import fs from "fs";
 
 const port = process.env.PORT || 4000;
 
 const app = express();
 
-app.use(express.static(folderToServe));
-app.get("/screenshot", async (req, res) => {
-    const dynamicPage = express();
-    dynamicPage.use(express.static(folderToServe));
+app.use(express.static("www"));
 
-    const dynamicServer = dynamicPage.listen(0, async () => {
-        const dynamicPort = dynamicServer.address().port;
-        console.log(
-            `Dynamic server is running at http://localhost:${dynamicPort}`
-        );
+app.get("/submit/:mpgParams", (req, res) => {
+    // console.log("🚀 ~ app.get ~ req:", req);
+    // Get any supplied parameters, this keeps it clean
+    // if I pass more parameters in the future
+    const mpgParams = req.query.mpgParams;
+    console.log("🚀 ~ app.get ~ mpgParams:", mpgParams);
 
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-        await page.goto(`http://localhost:${dynamicPort}`);
+    const worker = new Worker("./image-generator.cjs", {
+        workerData: {
+            mpgParams,
+        },
+    });
 
-        await page.waitForResponse((response) => response.status() === 200);
+    // nicer would be to return a link the user
+    // can click to download the image
+    // or better yet dynamically load it into the original page in an iframe or ssg thing
+    // but that might require moving project
+    // to a framework like react/astro
+    worker.on("message", (message) => {
+        if (message.type === "image") {
+            res.writeHead(200, {
+                "Content-Type": "image/png",
+                "Content-Length": message.data.length,
+            });
+            res.end(message.data);
 
-        await scrollPageToBottom(page);
+            // save the image - temporary for now
+            // fs.writeFileSync(
+            //     `received_image-${message.port}.png`,
+            //     message.data
+            // );
+        }
+    });
 
-        const screenshotBuffer = await page.screenshot({ fullPage: true });
+    worker.on("error", (err) => {
+        // Handle errors from the worker
+        console.error(err);
+        res.status(500).send("Internal Server Error");
+    });
 
-        // Respond with the image
-        res.writeHead(200, {
-            "Content-Type": "image/png",
-            "Content-Length": screenshotBuffer.length,
-        });
-        res.end(screenshotBuffer);
-        // other option is just to save the file to disk
-        // await page.screenshot({ path: 'example.png' });
-        // Close the browser
-
-        await browser.close();
-        console.log(`Closing dynamic server http://localhost:${dynamicPort}`);
-
-        await dynamicServer.close();
+    worker.on("exit", (code) => {
+        if (code !== 0) {
+            // Handle non-zero exit codes
+            console.error(new Error(`Worker stopped with exit code ${code}`));
+        }
     });
 });
 
