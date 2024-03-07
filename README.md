@@ -16,7 +16,9 @@ Make url request to `localhost:4000` with. Not providing all the parameters will
 wget --output-document screenshot.png 'http://localhost:4200/submit/mpgParams?title=A Motivational Poster&sentence=something pithy&imageWidth=450px&imageUrl=https://picsum.photos/seed/1709802270038/300/300'
 ```
 
+This generates
 
+![](screenshots/screenshot.png)
 
 Testing with
 
