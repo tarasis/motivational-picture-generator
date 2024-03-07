@@ -13,27 +13,49 @@
 </head>
 <style>
     :root {
-        <% if (mpgParams.titleColor) { %>
-            --font-color-title: <%=mpgParams.titleColor%>;
-        <% } %>
-        <% if (mpgParams.sentenceColor) { %>
-            --font-color-sentence: <%=mpgParams.sentenceColor%>;
-        <% } %>
-        <% if (mpgParams.borderColor) { %>
-            --border-color: <%=mpgParams.borderColor%>;
-        <% } %>
-        <% if (mpgParams.backgroundColor) { %>
-            --background-color: <%=mpgParams.backgroundColor%>;
-        <% } %>
+        <% if (mpgParams.titleColor) {
+            %>--font-color-title: <%=mpgParams.titleColor%>;
+            <%
+        }
+
+        %><% if (mpgParams.sentenceColor) {
+            %>--font-color-sentence: <%=mpgParams.sentenceColor%>;
+            <%
+        }
+
+        %><% if (mpgParams.borderColor) {
+            %>--border-color: <%=mpgParams.borderColor%>;
+            <%
+        }
+
+        %><% if (mpgParams.backgroundColor) {
+            %>--background-color: <%=mpgParams.backgroundColor%>;
+            <%
+        }
+
+        %>
+
+        <% if (mpgParams.borderType) { %>
+            --border-type: <%=mpgParams.borderType%>;
+        <% } else { %>
+        <%}%>
     }
 </style>
-
+  
 <body>
     <%- include('header.ejs') -%>
 
         <main>
-            <img style="width: <%= mpgParams.imageWidth %>" src="<%= mpgParams.imageUrl %>"
-                alt="An image supplied for the motivational poster">
+            <div class=
+            <% if (mpgParams.borderType) { %>
+                "<%=mpgParams.borderType%>"
+            <% } else { %>
+                ""
+            <%}%> >
+
+                <img style="width: <%= mpgParams.imageWidth %>" src="<%= mpgParams.imageUrl %>"
+                    alt="An image supplied for the motivational poster">
+            </div>
             <!-- <p>➡️<%= mpgParams.imageUrl %>⬅️</p> -->
             <h1>
                 <%= mpgParams.title %>

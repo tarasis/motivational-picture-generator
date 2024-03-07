@@ -2,7 +2,6 @@ body {
     background-color: var(--background-color, #807a00);
     display: grid;
     place-items: center;
-    /* color: var(--background-colour); */
 }
 
 h1 {
@@ -30,14 +29,57 @@ img {
     width: 100%;
     margin: 0 auto;
 
-    border-color: var(--border-color, pink);
+    position: relative;
+
+    /* border-color: var(--border-color, pink);
     border-radius: 10px;
     border-width: 3px;
-    border-style: solid;
+    border-style: solid; */
 }
 
 footer {
     margin-top: 5rem;
     width: 100%;
     text-align: center;
+}
+
+.corner-only-border {
+    --b: 0.5em; /* border width */
+    --c: 5em; /* corner size */
+    --r: 2em; /* corner rounding */
+
+    position: relative;
+    margin: 1em auto;
+    border: solid var(--b) transparent;
+    padding: 1em;
+
+    &::before {
+        position: absolute;
+        z-index: -1;
+        inset: calc(-1 * var(--b));
+        border: inherit;
+        border-radius: var(--r);
+        background: linear-gradient(orange, deeppink, purple) border-box;
+        --corner: conic-gradient(
+                from -90deg at var(--c) var(--c),
+                red 25%,
+                #0000 0
+            )
+            0 0 / calc(100% - var(--c)) calc(100% - var(--c)) border-box;
+        --inner: conic-gradient(red 0 0) padding-box;
+        -webkit-mask: var(--corner), var(--inner);
+        -webkit-mask-composite: source-out;
+        mask:
+            var(--corner) subtract,
+            var(--inner);
+        content: "";
+    }
+}
+
+.basic-border {
+    border-color: var(--border-color, pink);
+    border-radius: 10px;
+    border-width: 3px;
+    border-style: solid;
+    padding: 1rem;
 }
