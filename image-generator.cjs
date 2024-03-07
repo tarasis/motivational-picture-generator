@@ -4,6 +4,7 @@ const express = require("express");
 
 const { parentPort, workerData } = require("worker_threads");
 const path = require("path");
+require("dotenv").config();
 
 const folderToServe =
     "/Users/tarasis/Programming/websites/rmcg.dev/www/FrontendMentor/newbie/social-links-profile/";
@@ -30,7 +31,11 @@ const dynamicServer = dynamicPage.listen(0, async () => {
     const dynamicPort = dynamicServer.address().port;
     console.log(`Dynamic server is running at http://localhost:${dynamicPort}`);
 
-    const browser = await puppeteer.launch();
+    const browserLocation = process.env.BROWSER || "";
+    const browser = await puppeteer.launch({
+        headless: true,
+        executablePath: browserLocation,
+    });
     const page = await browser.newPage();
     await page.goto(`http://localhost:${dynamicPort}`);
 
