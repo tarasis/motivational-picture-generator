@@ -15,7 +15,7 @@ app.get("/submit/:mpgParams", (req, res) => {
     // console.log("🚀 ~ app.get ~ req:", req);
     // Get any supplied parameters, this keeps it clean
     // if I pass more parameters in the future
-    const mpgParams = req.query.mpgParams;
+    const mpgParams = req.query;
     console.log("🚀 ~ app.get ~ mpgParams:", mpgParams);
 
     const worker = new Worker("./image-generator.cjs", {
