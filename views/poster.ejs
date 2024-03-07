@@ -11,6 +11,22 @@
     <link rel="stylesheet" href="assets/css/poster.css">
 
 </head>
+<style>
+    :root {
+        <% if (mpgParams.titleColor) { %>
+            --font-color-title: <%=mpgParams.titleColor%>;
+        <% } %>
+        <% if (mpgParams.sentenceColor) { %>
+            --font-color-sentence: <%=mpgParams.sentenceColor%>;
+        <% } %>
+        <% if (mpgParams.borderColor) { %>
+            --border-color: <%=mpgParams.borderColor%>;
+        <% } %>
+        <% if (mpgParams.backgroundColor) { %>
+            --background-color: <%=mpgParams.backgroundColor%>;
+        <% } %>
+    }
+</style>
 
 <body>
     <%- include('header.ejs') -%>

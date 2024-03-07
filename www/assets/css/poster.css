@@ -1,8 +1,22 @@
 body {
-    background-color: black;
+    background-color: var(--background-color, #807a00);
     display: grid;
     place-items: center;
-    color: white;
+    /* color: var(--background-colour); */
+}
+
+h1 {
+    /* font-size: 3rem; */
+    /* text-align: center; */
+    color: var(--font-color-title, pink);
+}
+
+p {
+    color: var(--font-color-sentence, green);
+}
+
+footer p {
+    color: powderblue;
 }
 
 main {
@@ -15,6 +29,11 @@ img {
     display: block;
     width: 100%;
     margin: 0 auto;
+
+    border-color: var(--border-color, pink);
+    border-radius: 10px;
+    border-width: 3px;
+    border-style: solid;
 }
 
 footer {

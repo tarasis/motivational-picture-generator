@@ -10,10 +10,10 @@ To start server
 npm run dev
 ```
 
-Make url request to `localhost:4000` with. Not providing all the parameters will cause the render to fail.
+Make url request to `localhost:4000` with. Not providing all the parameters will cause the render to fail atm. Have only added optional checking for CSS colors for now with garish defaults so I can see if something failed.
 
 ```bash
-wget --output-document screenshot.png 'http://localhost:4200/submit/mpgParams?title=A Motivational Poster&sentence=something pithy&imageWidth=450px&imageUrl=https://picsum.photos/seed/1709802270038/300/300'
+wget --output-document screenshot.png 'http://localhost:4200/submit/mpgParams?title=A Motivational Poster&sentence=something pithy&imageWidth=600px&imageUrl=https://dj.tdn.wf/image/400x300/282828&titleColor=blue&sentenceColor=orange&borderColor=red&backgroundColor=%23107a00'
 ```
 
 This generates
